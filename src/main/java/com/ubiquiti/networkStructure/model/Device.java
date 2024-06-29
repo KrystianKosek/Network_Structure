@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
+/**
+ * Device entity.
+ */
 @Entity
 @Table(name = "Devices")
 @Data
@@ -24,5 +27,7 @@ public class Device {
     @Column(unique = true)
     private String macAddress;
 
-    private String uplinkMacAddress;
+    @ManyToOne
+    @JoinColumn(name = "uplinkMacAddress", referencedColumnName = "macAddress")
+    private Device uplinkDevice;
 }

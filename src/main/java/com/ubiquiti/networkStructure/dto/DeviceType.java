@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
+/**
+ * Device type enum.
+ */
 @AllArgsConstructor
 public enum DeviceType {
     GATEWAY("Gateway"),
@@ -12,8 +15,7 @@ public enum DeviceType {
 
     private final String name;
 
-    @JsonValue
-    public String getDeviceType() {
+    @JsonValue String getDeviceType() {
         return name;
     }
 
