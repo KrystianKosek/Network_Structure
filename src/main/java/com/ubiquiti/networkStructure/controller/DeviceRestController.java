@@ -15,13 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/devices")
 @RequiredArgsConstructor
-//SLF4J
 public class DeviceRestController {
 
     private final DeviceService deviceService;
 
     /**
-     * Returns all registered devices, in the following order "Gateway > Switch > Access Point"
+     * Returns all registered devices, in the following order "Gateway > Switch > Access Point".
      *
      * @return response object with list of devices
      */
@@ -53,7 +52,7 @@ public class DeviceRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public Status registerNewDevice(@Valid @RequestBody NetworkDeviceRequest newDevice) {
         deviceService.registerNewDevice(newDevice);
-        return new Status("Registered new device", StatusCode.SUCCESS);
+        return new Status("Registered new device successfully", StatusCode.SUCCESS);
     }
 
     /**
@@ -70,7 +69,7 @@ public class DeviceRestController {
     /**
      * Returns registered network device topology starting from a device with given mac address.
      *
-     * @param macAddress mac address of starting device
+     * @param macAddress mac address of root device
      * @return response object with tree structure of registered devices
      */
     @GetMapping("/topology/{macAddress}")

@@ -113,7 +113,7 @@ public class DeviceRestControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.statusCode").value("SUCCESS"))
-                .andExpect(jsonPath("$.statusDescription").value("Registered new device"));
+                .andExpect(jsonPath("$.statusDescription").value("Registered new device successfully"));
 
         verify(this.deviceService).registerNewDevice(request);
     }

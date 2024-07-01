@@ -18,20 +18,6 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * Handles IllegalArgumentException.
-     *
-     * @param exception exception
-     * @return response entity
-     */
-    @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<Status> handleIllegalArgumentException(IllegalArgumentException exception) {
-        Status status = new Status();
-        status.setStatusCode(StatusCode.ERROR);
-        status.setStatusDescription(exception.getMessage());
-        return ResponseEntity.badRequest().body(status);
-    }
-
-    /**
      * Handles JdbcSQLIntegrityConstraintViolationException.
      *
      * @param exception exception
@@ -41,18 +27,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Status> handleConstraintViolationException(JdbcSQLIntegrityConstraintViolationException exception) {
         Status status = new Status();
         status.setStatusCode(StatusCode.ERROR);
-        status.setStatusDescription("MAC is globally unique, so two devices can't have the same MAC address");
+        status.setStatusDescription("MAC is globally unique, so two devices can't have the same MAC address.");
         return ResponseEntity.badRequest().body(status);
     }
 
     /**
-     * Handles NetworkDeviceNotFoundException.
+     * Handles IllegalArgumentException and NetworkDeviceNotFoundException.
      *
      * @param exception exception
      * @return response entity
      */
-    @ExceptionHandler({NetworkDeviceNotFoundException.class})
-    public ResponseEntity<Status> handleNetworkDeviceNotFoundException(NetworkDeviceNotFoundException exception) {
+    @ExceptionHandler({IllegalArgumentException.class, NetworkDeviceNotFoundException.class})
+    public ResponseEntity<Status> handleIllegalArgumentAndNetworkDeviceNotFoundException(RuntimeException exception) {
         Status status = new Status();
         status.setStatusCode(StatusCode.ERROR);
         status.setStatusDescription(exception.getMessage());

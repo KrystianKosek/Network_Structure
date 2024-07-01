@@ -1,6 +1,5 @@
 package com.ubiquiti.networkStructure.dto;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
@@ -10,7 +9,6 @@ import lombok.With;
  *
  * @param <T> type of the response body
  */
-@EqualsAndHashCode(callSuper = true)
 @With
 @Getter
 @Setter

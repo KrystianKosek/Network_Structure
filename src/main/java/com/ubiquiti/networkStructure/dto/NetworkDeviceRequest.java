@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Pattern;
  * @param uplinkMacAddress (optional) uplink mac address of the device
  */
 public record NetworkDeviceRequest(
-        @NotNull(message = "Type of the device is required!") DeviceType deviceType,
+        @NotNull(message = "Type of the device is required") DeviceType deviceType,
         @NotNull(message = "Mac address is required") @Pattern(regexp = MAC_ADDRESS_PATTERN, message = "Invalid structure of mac address") String macAddress,
         @Pattern(regexp = MAC_ADDRESS_PATTERN, message = "Invalid structure of uplink mac address") String uplinkMacAddress
 ) {

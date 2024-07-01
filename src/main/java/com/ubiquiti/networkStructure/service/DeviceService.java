@@ -24,7 +24,7 @@ public class DeviceService {
     private final DeviceTypeComparator deviceTypeComparator = new DeviceTypeComparator();
 
     /**
-     * Returns all registered devices, in the following order "Gateway > Switch > Access Point"
+     * Returns all registered devices, in the following order "Gateway > Switch > Access Point".
      *
      * @return list of devices
      */
@@ -39,7 +39,7 @@ public class DeviceService {
      * @return device
      */
     public NetworkDeviceResponse getDeviceByMacAddress(String macAddress) {
-        Device device = deviceRepository.findByMacAddress(macAddress);
+        final Device device = deviceRepository.findByMacAddress(macAddress);
         if (device == null) {
             throw new NetworkDeviceNotFoundException("Missing device with mac address: " + macAddress);
         }
@@ -52,7 +52,7 @@ public class DeviceService {
      * @param newDevice new device
      */
     public void registerNewDevice(NetworkDeviceRequest newDevice) {
-        Device parentDevice = deviceRepository.findByMacAddress(newDevice.uplinkMacAddress());
+        final Device parentDevice = deviceRepository.findByMacAddress(newDevice.uplinkMacAddress());
         deviceRepository.save(new Device().withDeviceType(newDevice.deviceType()).withMacAddress(newDevice.macAddress()).withUplinkDevice(parentDevice));
     }
 
@@ -62,7 +62,7 @@ public class DeviceService {
      * @return tree structure of registered devices
      */
     public List<TopologyNetworkDeviceResponse> getNetworkDeviceTopology() {
-        List<Device> devices = deviceRepository.findAll();
+        final List<Device> devices = deviceRepository.findAll();
         return createTreeByParent(devices, null);
     }
 
@@ -73,25 +73,29 @@ public class DeviceService {
      * @return tree structure of registered devices
      */
     public List<TopologyNetworkDeviceResponse> getNetworkDeviceTopologyFromGivenDevice(String macAddress) {
-        List<Device> devices = deviceRepository.findAll();
-        Device device = deviceRepository.findByMacAddress(macAddress);
+        final List<Device> devices = deviceRepository.findAll();
+        final Device device = deviceRepository.findByMacAddress(macAddress);
         if (device == null) {
             throw new NetworkDeviceNotFoundException("Missing device with mac address: " + macAddress);
         }
-        List<TopologyNetworkDeviceResponse> aggregatedDevices = createTreeByParent(devices, macAddress);
-        return List.of(new TopologyNetworkDeviceResponse(device.getDeviceType(), device.getMacAddress(), aggregatedDevices));
+        final List<TopologyNetworkDeviceResponse> aggregatedDevices = createTreeByParent(devices, macAddress);
+        return List.of(mapToTopologyDto(device, aggregatedDevices));
     }
 
     private NetworkDeviceResponse mapToDto(Device device) {
         return new NetworkDeviceResponse(device.getDeviceType(), device.getMacAddress());
     }
 
+    private TopologyNetworkDeviceResponse mapToTopologyDto(Device device, List<TopologyNetworkDeviceResponse> aggregatedDevices) {
+        return new TopologyNetworkDeviceResponse(device.getDeviceType(), device.getMacAddress(), aggregatedDevices);
+    }
+
     private List<TopologyNetworkDeviceResponse> createTreeByParent(final List<Device> devices, String parentMacAddress) {
-        List<TopologyNetworkDeviceResponse> result = new ArrayList<>();
+        final List<TopologyNetworkDeviceResponse> result = new ArrayList<>();
         devices.forEach(device -> {
             if (Objects.equals(device.getUplinkDevice() == null ? null : device.getUplinkDevice().getMacAddress(), parentMacAddress)) {
-                List<TopologyNetworkDeviceResponse> aggregatedDeviceResult = createTreeByParent(devices, device.getMacAddress());
-                result.add(new TopologyNetworkDeviceResponse(device.getDeviceType(), device.getMacAddress(), aggregatedDeviceResult));
+                final List<TopologyNetworkDeviceResponse> aggregatedDeviceResult = createTreeByParent(devices, device.getMacAddress());
+                result.add(mapToTopologyDto(device, aggregatedDeviceResult));
             }
         });
         return result;
