@@ -53,7 +53,7 @@ public class DeviceRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public Status registerNewDevice(@Valid @RequestBody NetworkDeviceRequest newDevice) {
         deviceService.registerNewDevice(newDevice);
-        return new Status("Added new device", StatusCode.SUCCESS);
+        return new Status("Registered new device", StatusCode.SUCCESS);
     }
 
     /**

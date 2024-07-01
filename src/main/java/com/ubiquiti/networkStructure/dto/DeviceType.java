@@ -15,7 +15,8 @@ public enum DeviceType {
 
     private final String name;
 
-    @JsonValue String getDeviceType() {
+    @JsonValue
+    public String getDeviceType() {
         return name;
     }
 

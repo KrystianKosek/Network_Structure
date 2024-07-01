@@ -41,7 +41,7 @@ public class DeviceService {
     public NetworkDeviceResponse getDeviceByMacAddress(String macAddress) {
         Device device = deviceRepository.findByMacAddress(macAddress);
         if (device == null) {
-            throw new NetworkDeviceNotFoundException(STR."Missing device with mac address: \{macAddress}");
+            throw new NetworkDeviceNotFoundException("Missing device with mac address: " + macAddress);
         }
         return mapToDto(device);
     }
@@ -76,7 +76,7 @@ public class DeviceService {
         List<Device> devices = deviceRepository.findAll();
         Device device = deviceRepository.findByMacAddress(macAddress);
         if (device == null) {
-            throw new NetworkDeviceNotFoundException(STR."Missing device with mac address: \{macAddress}");
+            throw new NetworkDeviceNotFoundException("Missing device with mac address: " + macAddress);
         }
         List<TopologyNetworkDeviceResponse> aggregatedDevices = createTreeByParent(devices, macAddress);
         return List.of(new TopologyNetworkDeviceResponse(device.getDeviceType(), device.getMacAddress(), aggregatedDevices));

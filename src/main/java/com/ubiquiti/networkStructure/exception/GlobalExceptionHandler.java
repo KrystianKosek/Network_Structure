@@ -74,6 +74,7 @@ public class GlobalExceptionHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
 
+        status.setStatusCode(StatusCode.ERROR);
         status.setStatusDescription(errors.toString());
         return ResponseEntity.badRequest().body(status);
     }
